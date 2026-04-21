@@ -1,0 +1,79 @@
+<template>
+    <!-- 🔄 Loader -->
+    <template if:true={isloading}>
+        <div class="loader-container">
+            <lightning-spinner alternative-text="Loading Dashboard..." size="large"></lightning-spinner>
+        </div>
+    </template>
+
+    <template if:true={hasData}>
+
+        <!-- 🔷 HEADER -->
+      <div class="custom-header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+
+        <!-- LEFT: TITLE -->
+        <div class="header-title">
+            🏆 Top Performers
+        </div>
+
+        <!-- RIGHT: LAST SYNC + BUTTON -->
+        <div class="slds-grid slds-grid_vertical-align-center">
+
+            <div class="last-sync slds-m-right_medium">
+                <strong>As of</strong> {lastSyncAt}
+            </div>
+
+            <lightning-button 
+                label="Export CSV"
+                variant="brand"
+                onclick={handleExport}>
+            </lightning-button>
+
+        </div>
+
+    </div>
+        <!-- 📊 CONTENT GRID -->
+<section class="top-performers-section">
+
+            <!-- 🏆 TOP PERFORMERS -->
+            <div class="card">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ambassador</th>
+                            <th>Coverage %</th>
+                            <th>Hours Worked</th>
+                            <th>Miles Covered</th>
+                            <th>Checkpoints Completed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={topPerformers} for:item="tp">
+                            <tr key={tp.ambassador_id}>
+                                <td>{tp.rank}</td>
+                                <td>{tp.ambassador_name}</td>
+                                <td>{tp.coverage_percentage}%</td>
+                                <td>{tp.hours_worked}</td>
+                                <td>{tp.miles_covered}</td>
+                                <td>{tp.checkpoints_completed}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ⚠️ ALERTS PANEL -->
+           
+
+</section>
+
+    </template>
+
+    <!-- ❌ No Data -->
+    <template if:false={hasData}>
+        <div class="no-data">
+            📊 No Data Available
+        </div>
+    </template>
+</template>

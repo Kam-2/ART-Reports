@@ -1,0 +1,90 @@
+.team-dashboard-container {
+    margin: 10px 0;
+}
+
+/* KPI Cards Container */
+.kpi-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* Individual KPI Card */
+.kpi-card {
+    flex: 1 1 150px;
+    min-width: 150px;
+    padding: 12px;
+    border-radius: 8px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Trend colors */
+.kpi-card.up {
+    background-color: #28a745; /* green */
+}
+.kpi-card.down {
+    background-color: #dc3545; /* red */
+}
+
+/* KPI label and values */
+.kpi-label {
+    font-size: 0.8rem;
+        color: #0f6228; /* Light gray for label text */
+
+    font-weight: bold;
+}
+.kpi-value {
+    font-size: 1.5rem;
+        color: #396628; /* Bright white for value text */
+
+    margin: 5px 0;
+}
+.kpi-delta {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Ambassador table */
+.ambassador-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.ambassador-table th, .ambassador-table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+.ambassador-table th {
+    background-color: #f4f4f4;
+}
+.custom-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8fafc;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.last-sync {
+    font-size: 12px;
+    color: #1e293b;
+    font-weight: bold;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.page-info {
+    font-weight: 600;
+}

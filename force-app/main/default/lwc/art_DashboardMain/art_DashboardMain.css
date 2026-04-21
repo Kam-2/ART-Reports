@@ -1,0 +1,186 @@
+/* =========================
+   📊 TAB SCROLL WRAPPER
+========================= */
+.tab-scroll {
+    overflow-x: auto;       /* horizontal scroll for tabs */
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    padding-bottom: 6px;
+}
+
+/* =========================
+   📌 TAB LIST
+========================= */
+.tab-list {
+    display: flex;
+    //gap: 8px;
+    min-width: max-content;
+}
+
+/* =========================
+   🧩 TAB ITEMS
+========================= */
+.tab-item {
+    padding: 10px 18px;        /* bigger size for easier click */
+    font-size: 14px;
+    font-weight: 600;
+    background: #fff7cc;       /* light yellow */
+    color: #b77f00;            /* darker yellow text */
+    cursor: pointer;
+    border: 1px solid #fcd34d; /* subtle yellow border */
+    transition: all 0.2s ease;
+    border-radius: 0;           /* no rounded edges */
+}
+
+.tab-item.active {
+    background: #fcd34d;       /* bright yellow active */
+    color: #000000;            /* black text for active */
+    box-shadow: 0 2px 6px rgba(252, 211, 77, 0.4);
+}
+
+.tab-item:hover {
+    background: #fef3c7;       /* lighter yellow hover */
+    color: #92400e;
+}
+
+/* =========================
+   📊 TAB SCROLLBAR STYLING
+========================= */
+.tab-scroll::-webkit-scrollbar {
+    height: 6px;               /* small scrollbar height */
+    background: transparent;
+}
+
+.tab-scroll::-webkit-scrollbar-thumb {
+    background: #fcd34d;       /* yellow thumb */
+    border-radius: 3px;
+}
+
+.tab-scroll::-webkit-scrollbar-track {
+    background: #fef3c7;       /* light yellow track */
+    border-radius: 3px;
+}
+
+/* Firefox */
+.tab-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #fcd34d #fef3c7;
+}
+
+/* =========================
+   🟢 PANEL & SECTIONS
+========================= */
+.tab-panel {
+    background: #ffffff;
+    border-radius: 0;          /* rectangular panel */
+    padding: 0;
+    margin-top: 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+/* Tabs header background */
+.tabs-section {
+    position: sticky;
+    top: 0;                 /* sticks to top of page/scroll container */
+    z-index: 10;            /* above content but below anything like modal */
+    background: #fafafa;    /* same as before */
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 4px; 
+}
+
+.tab-content {
+    margin-top: 0;       /* 🔥 remove gap */
+    padding-top: 8px;    /* small controlled spacing */
+}
+.tab-content > *:first-child {
+    margin-top: 0 !important;
+}
+/* =========================
+   🟢 FILTER SECTION
+========================= */
+/* =========================
+   🟢 STICKY FILTERS
+========================= */
+/* =========================
+   🟢 STICKY FILTERS WRAPPER
+========================= */
+.sticky-filters {
+    display: flex;
+    align-items: flex-start;    /* align top of filters with button */
+    padding: 8px 12px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;                     /* sticky under tabs */
+    z-index: 10;
+    gap: 12px;
+    margin-bottom: 0px;
+}
+
+/* FILTERS LEFT: wraps internally */
+.filter-left {
+    display: flex;
+    flex-wrap: wrap;            /* allow filters to wrap */
+    gap: 8px;
+}
+
+/* REFRESH BUTTON RIGHT: always separate */
+.filter-right {
+    flex-shrink: 0;             /* do not shrink */
+    margin-left: auto;           /* push to far right */
+    display: flex;
+    align-items: center;
+    background: #FFD600;
+    margin-top: 8px;
+}
+
+/* =========================
+   🟢 DATA SECTION
+========================= */
+.data-section {
+padding: 0 12px 12px 12px;
+    background: #f9fafb; /* slight contrast */
+    max-height: 500px;    /* scrollable data section */
+    overflow-y: auto;     /* vertical scroll */
+}
+
+/* =========================
+   🟢 CHILD COMPONENT CARDS
+========================= */
+c-art-dashboard-metrics,
+c-art-missed-checkpoints,
+c-art-coverage-reports,
+c-art-zone-coverage,
+c-art-team-dashboard,
+c-art-checkpoint-timing,
+c-art-boundary-breach-report,
+c-art-ambassador-activity-report,
+c-art-ambassador-shiftin-shiftout,
+c-art-ambassador-idle-report {
+    background: #ffffff;
+    border-radius: 4px;          /* subtle corner */
+    padding: 8px 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border: 1px solid #f1f5f9;
+    margin-top: 0;
+}
+
+/* =========================
+   📱 RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .tab-item {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+.refresh-btn {
+    --slds-c-button-neutral-color-background: #f3f4f6;
+    --slds-c-button-neutral-color-border: #d1d5db;
+    --slds-c-button-text-color: #374151;
+}
+.refresh-btn:hover {
+    --slds-c-button-neutral-color-background: #e5e7eb;
+}

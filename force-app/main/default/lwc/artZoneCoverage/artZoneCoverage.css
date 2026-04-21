@@ -1,0 +1,121 @@
+.zone-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 12px 0;
+    background: #fff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.zone-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.sub {
+    font-size: 12px;
+    color: gray;
+}
+
+.coverage-box {
+    text-align: right;
+}
+
+.coverage {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.progress {
+    width: 120px;
+    height: 6px;
+    background: #eee;
+    border-radius: 4px;
+    margin-top: 4px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #1589ee;
+    border-radius: 4px;
+}
+
+.metrics {
+    display: flex;
+    gap: 20px;
+    margin: 12px 0;
+    font-size: 13px;
+}
+
+.table-wrapper {
+    margin-top: 10px;
+}
+
+.btn {
+    margin-top: 10px;
+    text-align: right;
+}
+
+/* 🔥 Coverage colors */
+.coverage-pill {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.coverage-pill.high {
+    background: #d4f7d4;
+    color: green;
+}
+
+.coverage-pill.medium {
+    background: #fff4cc;
+    color: #b38f00;
+}
+
+.coverage-pill.low {
+    background: #ffd6d6;
+    color: red;
+}
+
+.spinner {
+    padding: 20px;
+}
+
+.error {
+    color: red;
+    padding: 10px;
+}
+.custom-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8fafc;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.last-sync {
+    font-size: 12px;
+    color: #1e293b;
+    font-weight: bold;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.page-info {
+    font-weight: 600;
+}

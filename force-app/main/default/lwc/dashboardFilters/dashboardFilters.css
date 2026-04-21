@@ -1,0 +1,200 @@
+.filter-card {
+    position: relative;
+    z-index: 5;
+    background-color: #f4f6f9;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 5px;
+}
+/* Single row field sizing */
+.single-row-field {
+    flex: 1 1 15%; /* Flex-grow, shrink, basis (adjust width for each field) */
+    min-width: 150px;
+    margin-right: 10px;
+}
+
+.single-row-field input[type="date"] {
+    width: 100px; /* fixed width for date input */
+}
+/* Buttons */
+/* Buttons column aligned vertically with fields */
+.buttons-col {
+    display: flex;
+    gap: 10px;
+    flex: 0 0 auto;
+    align-items: center; /* keep items aligned horizontally */
+    margin-top: 20px; /* 🔹 push buttons slightly down */
+}
+
+/* Ensure inputs and comboboxes take full width inside column */
+.slds-input, .slds-combobox__input, .slds-combobox {
+    width: 100%;
+}
+
+/* Mobile responsive */
+@media (max-width: 1024px) {
+    .single-row-field {
+        flex: 1 1 45%;
+        margin-bottom: 10px;
+    }
+    .buttons-col {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .single-row-field {
+        flex: 1 1 100%;
+    }
+    .buttons-col {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+}
+/* Dates smaller */
+.single-row-field input[type="date"] {
+    width: 120px;
+}
+
+/* Multi-select slightly bigger */
+/*.multi-select {
+    flex: 1 1 10%;
+}*/
+.multi-select {
+    position: relative;
+    width: 250px;
+}
+
+/* If using lightning-combobox */
+.multi-select lightning-combobox {
+    width: 100%;
+}
+.multi-select .slds-combobox__form-element {
+    height: 40px;
+}
+/* =========================
+   🟡 APPLY BUTTON (YELLOW)
+========================= */
+.apply-btn {
+    --slds-c-button-brand-color-background: #fcd34d;
+    --slds-c-button-brand-color-border: #fcd34d;
+    --slds-c-button-brand-text-color: #111827;
+
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.apply-btn:hover {
+    --slds-c-button-brand-color-background: #fbbf24; /* slightly darker */
+    --slds-c-button-brand-color-border: #fbbf24;
+}
+
+/* Click / Press */
+.apply-btn:active {
+    transform: scale(0.97); /* subtle press effect */
+    --slds-c-button-brand-color-background: #f59e0b; /* deeper yellow */
+}
+
+
+/* =========================
+   ⚪ RESET BUTTON (NEUTRAL)
+========================= */
+.reset-btn {
+    --slds-c-button-neutral-color-background: #f3f4f6;
+    --slds-c-button-neutral-color-border: #d1d5db;
+    --slds-c-button-text-color: #374151;
+
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.reset-btn:hover {
+    --slds-c-button-neutral-color-background: #e5e7eb;
+}
+
+/* Click / Press */
+.reset-btn:active {
+    transform: scale(0.97);
+    --slds-c-button-neutral-color-background: #d1d5db;
+}
+
+/* Dropdown same width as field */
+.dropdown {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-height: 200px;
+    overflow: auto;
+    z-index: 999;
+}
+
+/* Checkbox row */
+.option {
+    padding: 6px;
+    cursor: pointer;
+}
+.option:hover {
+    background: #f3f3f3;
+}
+
+/* Selected summary */
+.selected-summary {
+    padding: 6px;
+    border: 1px solid #d8dde6;
+    border-radius: 4px;
+    background: white;
+    font-size: 13px;
+}
+.dropdown-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border: 1px solid #d8dde6;   /* 👈 same as lightning input */
+    border-radius: 0.25rem;
+    background: #ffffff;
+
+    padding: 0.4rem 0.6rem;
+    height: 36px;                /* 👈 match input height */
+    cursor: pointer;
+}
+
+.selected-summary {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-icon {
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+}
+.option {
+    display: flex;
+    align-items: center; /* 🔥 this fixes vertical alignment */
+    gap: 0.5rem;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.option input[type="checkbox"] {
+    margin: 0; /* remove default browser offset */
+}
+
+.option-label {
+    line-height: 1; /* keeps text aligned nicely */
+}
+.custom-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #3e3e3c;
+    margin-bottom: 4px;
+}
+.no-box-label {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}

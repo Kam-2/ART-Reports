@@ -1,0 +1,77 @@
+<template>
+    <lightning-card>
+
+    <div class="custom-header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+
+    <!-- LEFT: TITLE -->
+    <div class="header-title">
+Ambassador Dwell Time & Idle Activity Report
+    </div>
+
+    <!-- RIGHT: LAST SYNC + BUTTON -->
+    <div class="slds-grid slds-grid_vertical-align-center">
+
+        <div class="last-sync slds-m-right_medium">
+            <strong>As of</strong> {lastSync}
+        </div>
+
+        <lightning-button 
+            label="Export CSV"
+            variant="brand"
+            onclick={handleExport}>
+        </lightning-button>
+
+    </div>
+
+</div>
+    
+
+<!-- 🔄 Loading -->
+<template if:true={isloading}>
+    <lightning-spinner alternative-text="Loading Idle Report"></lightning-spinner>
+</template>
+
+<!-- ❌ Error -->
+<template if:true={error}>
+    <div class="slds-text-color_error slds-p-around_small">
+        {error}
+    </div>
+</template>
+
+<!-- ✅ Data Table -->
+<template if:true={hasData}>
+    <lightning-datatable
+        key-field="id"
+        data={tableData}
+        columns={columns}
+        hide-checkbox-column>
+    </lightning-datatable>
+    <div class="pagination">
+<lightning-button 
+    label="Previous" 
+    onclick={handlePrevious}
+    disabled={isPreviousDisabled}>
+</lightning-button>
+
+<span class="page-info">
+    Page {currentPage} of {totalPages}
+</span>
+
+<lightning-button 
+    label="Next" 
+    onclick={handleNext}
+    disabled={isNextDisabled}>
+</lightning-button>
+</div>
+</template>
+
+<!-- ⚠️ No Data -->
+<template if:false={hasData}>
+    <template if:false={isloading}>
+        <div class="slds-p-around_small">
+            No data found
+        </div>
+    </template>
+</template>
+    </lightning-card>
+</template>

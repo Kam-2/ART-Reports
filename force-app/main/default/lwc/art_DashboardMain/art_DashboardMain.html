@@ -1,0 +1,90 @@
+<template>
+    <div class="tab-panel">
+
+        <!-- TABS -->
+        <div class="tabs-section">
+            <div class="tab-scroll">
+                <div class="tab-list">
+                    <div class={dashboardClass} data-tab="dashboard" onclick={handleTabClick}>Operations Dashboard</div>
+                    <div class={topClass} data-tab="top" onclick={handleTabClick}>Top Performers</div>
+                    <div class={missedClass} data-tab="missed" onclick={handleTabClick}>Missed Checkpoints</div>
+                    <div class={coverageClass} data-tab="coverage" onclick={handleTabClick}>Coverage Reports</div>
+                    <div class={zoneClass} data-tab="zone" onclick={handleTabClick}>Zone Coverage</div>
+
+                    <div class={teamClass} data-tab="team" onclick={handleTabClick}>Team Perfomance</div>
+                    <div class={timingClass} data-tab="timing" onclick={handleTabClick}>Checkpoint Timing Report</div>
+                    <div class={boundaryClass} data-tab="boundary" onclick={handleTabClick}>Boundary Breach Report</div>
+                    <div class={activityClass} data-tab="ambactivity" onclick={handleTabClick}>Ambassador Activity Report</div>
+                    <div class={shiftClass} data-tab="ambashiftin" onclick={handleTabClick}>Ambassador Shift In/Out Report</div>
+                    <div class={idleClass} data-tab="ambidle" onclick={handleTabClick}>Ambassador Dwell Time & Idle Activity Report</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILTERS (sticky) -->
+        <div class="sticky-filters">
+            <div class="filter-left">
+                <c-dashboard-filters 
+                    config={filterConfig} 
+                    onfilterchange={handleApplyFilter} 
+                    active-tab={activeTab}>
+                </c-dashboard-filters>
+            </div>
+            <div class="filter-right">
+                <lightning-button 
+                    label="Refresh"
+                    icon-name="utility:refresh"
+                    class="refresh-btn"
+                    onclick={handleRefresh}
+                    disabled={isloading}>
+                </lightning-button>
+            </div>
+        </div>
+
+        <!-- DATA SECTION -->
+        <div class="data-section">
+            <template if:true={isloading}>
+                <div class="slds-align_absolute-center slds-m-around_medium">
+                    <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            
+                <template if:true={isDashboard}>
+                    <c-art-dashboard-metrics data={dashboardData}></c-art-dashboard-metrics>
+                </template>
+                <template if:true={isTop}>
+
+<c-art-top-performers data={dashboardData}></c-art-top-performers>
+                </template>
+                <template if:true={isMissed}>
+                    <c-art-missed-checkpoints missed-data={missedData} is-loading={isloading} error={error}></c-art-missed-checkpoints>
+                </template>
+                <template if:true={isCoverage}>
+                    <c-art-coverage-reports data={coverageData} is-loading={isCoverageLoading} error={coverageError}></c-art-coverage-reports>
+                </template>
+                <template if:true={isZone}>
+                    <c-art-zone-coverage data={zoneCoverageData}></c-art-zone-coverage>
+                </template>
+                <template if:true={isTeam}>
+                    <c-art-team-dashboard data={teamData}></c-art-team-dashboard>
+                </template>
+                <template if:true={isTiming}>
+                    <c-art-checkpoint-timing data={checkpointTimingData}></c-art-checkpoint-timing>
+                </template>
+                <template if:true={isBoundary}>
+                    <c-art-boundary-breach-report data={boundaryBreachData}></c-art-boundary-breach-report>
+                </template>
+                <template if:true={isActivity}>
+                    <c-art-ambassador-activity-report data={ambassadorData}></c-art-ambassador-activity-report>
+                </template>
+                <template if:true={isShift}>
+                    <c-art-ambassador-shiftin-shiftout data={reportData}></c-art-ambassador-shiftin-shiftout>
+                </template>
+                <template if:true={isIdle}>
+                    <c-art-ambassador-idle-report data={idleData}></c-art-ambassador-idle-report>
+                </template>
+        
+        </div>
+    </div>
+</template>

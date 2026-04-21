@@ -1,0 +1,68 @@
+<template>
+    
+    <lightning-card>
+
+    <!-- 🔥 CUSTOM HEADER (ALL IN ONE ROW) -->
+    <div class="custom-header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+
+        <!-- LEFT: TITLE -->
+        <div class="header-title">
+            Ambassador Missed Checkpoints Detail Report
+        </div>
+
+        <!-- RIGHT: LAST SYNC + BUTTON -->
+        <div class="slds-grid slds-grid_vertical-align-center">
+
+            <div class="last-sync slds-m-right_medium">
+                <strong>As of</strong> {lastSync}
+            </div>
+
+            <lightning-button 
+                label="Export CSV"
+                variant="brand"
+                onclick={handleExport}>
+            </lightning-button>
+
+        </div>
+
+    </div>
+         
+        
+        <!-- Datatable -->
+        <template if:true={records.length}>
+            <lightning-datatable
+                key-field="id"
+data={paginatedRecords}
+                columns={columns}
+                hide-checkbox-column
+                show-row-number-column
+                onsort={handleSort}
+                sorted-by={sortedBy}
+                sorted-direction={sortDirection}>
+            </lightning-datatable>
+            <div class="pagination">
+    <lightning-button 
+        label="Previous" 
+        onclick={handlePrevious}
+disabled={isPreviousDisabled}>
+    </lightning-button>
+
+    <span class="page-info">
+        Page {currentPage} of {totalPages}
+    </span>
+
+    <lightning-button 
+        label="Next" 
+        onclick={handleNext}
+        disabled={isNextDisabled}>
+    </lightning-button>
+</div>
+        </template>
+
+        <!-- No Data -->
+        <template if:false={records.length}>
+            <div class="slds-p-around_medium">No results found.</div>
+        </template>
+
+    </lightning-card>
+</template>

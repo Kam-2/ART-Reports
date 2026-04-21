@@ -1,0 +1,83 @@
+.table-container {
+    overflow-x: auto;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.custom-table th {
+    background: #f4f6f9;
+    padding: 10px;
+    text-align: left;
+}
+
+.custom-table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* 🎯 Coverage Colors */
+.pill {
+    padding: 4px 10px;
+    border-radius: 12px;
+    color: white;
+    font-size: 12px;
+}
+
+.high {
+    background: green;
+}
+
+.medium {
+    background: orange;
+}
+
+.low {
+    background: red;
+}
+
+.export-btn {
+    margin-top: 12px;
+    text-align: right;
+}
+
+.error {
+    color: red;
+    padding: 10px;
+}
+
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+}
+.custom-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8fafc;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.last-sync {
+    font-size: 12px;
+    color: #1e293b;
+    font-weight: bold;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+}
+.page-info {
+    font-weight: 600;
+}

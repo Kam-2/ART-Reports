@@ -1,0 +1,62 @@
+.table-container {
+    overflow-x: auto;
+}
+
+.no-data {
+    padding: 20px;
+    text-align: center;
+    color: gray;
+}
+
+.error {
+    color: red;
+    padding: 10px;
+}
+
+/* 🎯 Pills */
+.pill {
+    padding: 4px 8px;
+    border-radius: 12px;
+    color: white;
+    font-size: 12px;
+}
+
+.pill.normal {
+    background: #4caf50;
+}
+
+.pill.medium {
+    background: #ff9800;
+}
+
+.pill.high {
+    background: #f44336;
+}
+.custom-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8fafc;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.last-sync {
+    font-size: 12px;
+    color: #1e293b;
+    font-weight: bold;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.page-info {
+    font-weight: 600;
+}

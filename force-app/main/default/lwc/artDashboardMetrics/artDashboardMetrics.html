@@ -1,0 +1,95 @@
+<template>
+    <!-- 🔄 Loader -->
+    <template if:true={isloading}>
+        <div class="loader-container">
+            <lightning-spinner alternative-text="Loading Dashboard..." size="large"></lightning-spinner>
+        </div>
+    </template>
+
+    <template if:true={hasData}>
+
+        <!-- 🔷 HEADER -->
+        <div class="dashboard-header">
+    <div class="header-left">
+        <h1>Operation Metrics</h1>
+        <p>Real-time field performance insights</p>
+    </div>
+
+    <div slot="actions" class="slds-grid slds-grid_vertical-align-center last-sync-container">
+        <!-- Last Sync -->
+        <div class="last-sync slds-m-right_medium">
+            <span class="asof-label"><span></span><strong> As of</strong> {lastSyncAt}</span>
+        </div>
+
+        <!-- Export Button (optional) -->
+        <!--
+        <lightning-button 
+            label="Export CSV"
+            variant="brand"
+            onclick={handleExport}>
+        </lightning-button>
+        -->
+    </div>
+</div>
+        
+<section class="kpi-section">
+
+        <!-- 🔥 KPI GRID -->
+        <div class="kpi-grid">
+            <template for:each={kpiCards} for:item="card">
+<div key={card.label} class={card.class}>
+                        <div class="kpi-top">
+                        <span class="kpi-label">{card.label}</span>
+                        <span class="kpi-icon">{card.icon}</span>
+                    </div>
+                    <div class="kpi-value">{card.value}</div>
+                </div>
+            </template>
+        </div>
+</section>
+        <!-- 📊 CONTENT GRID -->
+<!--<section class="top-performers-section">-->
+
+            <!-- 🏆 TOP PERFORMERS -->
+        <!--    <div class="card">
+                <h3>🏆 Top Performers</h3>
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ambassador</th>
+                            <th>Coverage %</th>
+                            <th>Hours Worked</th>
+                            <th>Miles Covered</th>
+                            <th>Checkpoints Completed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={topPerformers} for:item="tp">
+                            <tr key={tp.ambassador_id}>
+                                <td>{tp.rank}</td>
+                                <td>{tp.ambassador_name}</td>
+                                <td>{tp.coverage_percentage}%</td>
+                                <td>{tp.hours_worked}</td>
+                                <td>{tp.miles_covered}</td>
+                                <td>{tp.checkpoints_completed}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+    
+           
+
+</section>-->
+
+    </template>
+
+    <!-- ❌ No Data -->
+    <template if:false={hasData}>
+        <div class="no-data">
+            📊 No Data Available
+        </div>
+    </template>
+</template>

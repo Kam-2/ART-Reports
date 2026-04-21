@@ -1,0 +1,144 @@
+<template>
+    <div class="filter-card slds-box slds-theme_default">
+        <div class="slds-grid slds-wrap filter-row">
+
+            <!-- Start Date -->
+            <template if:true={config.showStartDate}>
+                <div class="slds-col single-row-field">
+                    <lightning-input 
+                    class="startDate"
+                        type="date" 
+                        label="Start Date" 
+                        value={startDateValue} 
+                        min={minDate}
+                        max={maxDate}
+                        onchange={handleStart}>
+                    </lightning-input>
+                </div>
+            </template>
+
+            <!-- End Date -->
+            <template if:true={config.showEndDate}>
+                <div class="slds-col single-row-field">
+                    <lightning-input 
+                    class="endDate"
+                        type="date" 
+                        label="End Date" 
+                        value={endDateValue} 
+                        min={minDate}
+                        max={maxDate}
+                        onchange={handleEnd}>
+                    </lightning-input>
+                </div>
+            </template>
+
+            <!-- Team -->
+      <!-- Team -->
+      <template if:true={config.showTeam}>
+
+<div class="slds-col single-row-field multi-select" data-filter>
+    <label class="cslds-form-element__label no-box-label">Teams</label>
+
+    <div class="dropdown-container" onclick={toggleTeamDropdown}>
+       
+        <div class="selected-summary">{teamSummary}</div>
+         <span class="slds-icon_container slds-icon-standard-multi_picklist" title="Picklist">
+        <lightning-icon icon-name="utility:down" size="x-small"></lightning-icon>
+    </span>
+    </div>
+
+    <template if:true={showTeamDropdown}>
+        <div class="dropdown" onclick={stopPropagation}>
+            <template for:each={teamOptionsWithCheck} for:item="opt">
+                <div key={opt.value}
+                     class="option"
+                     data-id={opt.value}
+                     onclick={handleTeamSelect}>
+                    <input type="checkbox" checked={opt.checked}/>
+                    <span class="option-label">{opt.label}</span>
+                </div>
+            </template>
+        </div>
+    </template>
+</div>
+      </template>
+            <!-- Zone -->
+            <template if:true={config.showZone}>
+
+          <div class="slds-col single-row-field multi-select">
+    <label class="slds-form-element__label no-box-label">Zones</label>
+
+    <div class="dropdown-container" onclick={toggleZoneDropdown}>
+        
+        <div class="selected-summary">{zoneSummary}</div>
+        <span class="slds-icon_container slds-icon-standard-multi_picklist" title="Picklist">
+        <lightning-icon icon-name="utility:down" size="x-small"></lightning-icon>
+    </span>
+    </div>
+
+    <template if:true={showZoneDropdown}>
+        <div class="dropdown" onclick={stopPropagation}>
+            <template for:each={zoneOptionsWithCheck} for:item="opt">
+                <div key={opt.value}
+                     class="option"
+                     data-id={opt.value}
+                     onclick={handleZoneSelect}>
+
+                    <input type="checkbox" checked={opt.checked}/>
+                    <span class="option-label">{opt.label}</span>
+                </div>
+            </template>
+        </div>
+    </template>
+</div>
+            </template>
+
+<template if:true={config.showAmbassador}>
+            <!-- Ambassador -->
+           <div class="slds-col single-row-field multi-select">
+    <label class="slds-form-element__label no-box-label">Ambassadors</label>
+
+    <div class="dropdown-container" onclick={toggleAmbDropdown}>
+       
+        <div class="selected-summary">{ambSummary}</div>
+         <span class="slds-icon_container slds-icon-standard-multi_picklist" title="Picklist">
+        <lightning-icon icon-name="utility:down" size="x-small"></lightning-icon>
+    </span>
+    </div>
+
+    <template if:true={showAmbDropdown}>
+        <div class="dropdown" onclick={stopPropagation}>
+            <template for:each={ambassadorOptionsWithCheck} for:item="opt">
+                <div key={opt.value}
+                     class="option"
+                     data-id={opt.value}
+                     onclick={handleAmbSelect}>
+
+                    <input type="checkbox" checked={opt.checked}/>
+                    <span class="option-label">{opt.label}</span>
+                </div>
+            </template>
+        </div>
+    </template>
+</div>
+</template>
+<template if:true={noAmbassadorsFound}>
+    <div class="no-data">No ambassadors available for selected team</div>
+</template>
+            <!-- Buttons -->
+            <div class="buttons-col">
+                <lightning-button 
+                    label="Apply Filters" 
+                    class="apply-btn"
+                    onclick={applyFilters}>
+                </lightning-button>
+                <lightning-button 
+                    label="Reset Filters" 
+                     class="reset-btn"
+                    onclick={resetFilters}>
+                </lightning-button>
+            </div>
+
+        </div>
+    </div>
+</template>
