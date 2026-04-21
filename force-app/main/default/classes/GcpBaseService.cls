@@ -1,23 +1,16 @@
 /**
- * GcpBaseService (Optimized)
  * Handles authentication, HTTP callouts, retry, and utilities
  */
 /**
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  * Class Name      : GcpBaseService
- * Author          : <YourName>
+ * Author          : Kamal Raj
  * Created Date    : Apr 7, 2026
- * Last Modified By: <YourName>
+ * Last Modified By: Kamal Raj
  * Last Modified On: Apr 21, 2026
  * Description     : Handles authentication, HTTP callouts, retry, and utilities
  *                   for GCP Reports integration.
  *  
- * Change History  :
- *  Date          │   Author     │   Change
- * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
- *  Apr 7,  2026  │ <YourName>   │ Initial version
- *  Apr 21, 2026  │ <YourName>   │ Added buildRequest(), fixed retry bug in send(),
- *               │              │ added System.debug logging throughout
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  */
 public with sharing class GcpBaseService {

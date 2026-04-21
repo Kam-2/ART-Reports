@@ -1,21 +1,13 @@
 /**
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  * Class Name      : GcpReportsService
- * Author          : <YourName>
+ * Author          : Kamal Raj M
  * Created Date    : Apr 7, 2026
  * Last Modified By: <YourName>
  * Last Modified On: Apr 21, 2026
  * Description     : Exposes @AuraEnabled methods for GCP report endpoints.
  *                   Delegates HTTP + auth to GcpBaseService.
  *  
- * Change History  :
- *  Date          │   Author     │   Change
- * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
- *  Apr 7,  2026  │ <YourName>   │ Initial version
- *  Apr 21, 2026  │ <YourName>   │ Replaced sendRequest() with GcpBaseService.send();
- *               │              │ removed duplicate handleResponse() in favour of
- *               │              │ GcpBaseService.parse(); refactored getAllZoneAndAmbassadorIds()
- *               │              │ and getZonePicklist(); added System.debug logging
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  */
 public with sharing class GcpReportsService {
