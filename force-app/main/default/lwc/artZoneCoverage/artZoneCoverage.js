@@ -2,34 +2,35 @@ import { LightningElement, api, track } from 'lwc';
 
 export default class ArtZoneCoverage extends LightningElement {
 
-    @track tableData      = [];
-    @track allData        = [];
+    @track tableData = [];
+    _data;
 
     @api isLoading = false;
     @api error;
 
-    @track totalZones   = 0;
-    @track totalVisits  = 0;
-    @track lastSyncAt   = '-';
+    @track totalZones;
+    @track totalAmbassadors;
+    @track lastSyncAt;
 
-    @track pageSize     = 10;
-    @track currentPage  = 1;
+    @track pageSize = 10;
+    @track currentPage = 1;
     @track totalRecords = 0;
 
     @track sortedBy;
     @track sortedDirection = 'asc';
 
-    columns = [
-        { label: 'Date',        fieldName: 'date'            },
-        { label: 'Zone',        fieldName: 'zone_name'       },
-        { label: 'Ambassador',  fieldName: 'ambassador_name', sortable: true },
-        { label: 'Team',        fieldName: 'team_name'       },
-        { label: 'Hours Spent', fieldName: 'hours_spent'     },
-        { label: 'Visits',      fieldName: 'visits', type: 'number' },
-        { label: 'Last Visit',  fieldName: 'last_visit'      }
-    ];
+    allData = [];
 
-    _data;
+    columns = [
+        { label: 'Date', fieldName: 'date' },
+        { label: 'Zone', fieldName: 'zone_name' },
+        { label: 'Ambassador', fieldName: 'ambassador_name', sortable: true },
+        { label: 'Team', fieldName: 'team_name' },
+        { label: 'Total Hours Spent', fieldName: 'hours_spent' },
+        { label: 'Hours Spent On Assigned Zone', fieldName: 'assigned_zone_hours' },
+        { label: 'Visits', fieldName: 'visits', type: 'number' },
+        { label: 'Last Visit', fieldName: 'last_visit' }
+    ];
 
     @api
     get data() {
@@ -39,68 +40,65 @@ export default class ArtZoneCoverage extends LightningElement {
     set data(value) {
         this._data = value;
 
-        console.log('ArtZoneCoverage → data received:', JSON.stringify(value));
+        console.log('Child received:', JSON.stringify(value));
 
-        if (!value) {
+        // ✅ FIX: direct response
+        if (!value || !value.data) {
             this.tableData = [];
+            this.allData = [];
             return;
         }
 
-        // Parent passes res.data — so value IS the data payload directly
-        // Expected shape:
-        // {
-        //     data    : [ ...rows... ],
-        //     summary : { total_visits, total_records },
-        //     period  : { last_sync_at }
-        // }
-        const obj = typeof value === 'string' ? JSON.parse(value) : value;
+        const records = value.data;
 
-        const rows = obj?.data;
-        console.log('ArtZoneCoverage → rows:', rows);
+        // ✅ Summary
+        this.totalZones = value.summary?.total_zones || 0;
+        this.totalAmbassadors = value.summary?.total_ambassadors || 0;
 
-        if (!Array.isArray(rows)) {
-            console.warn('ArtZoneCoverage → No valid rows found in data payload');
-            this.tableData  = [];
-            this.totalRecords = 0;
-            return;
-        }
+        // ✅ Last Sync
+        this.lastSyncAt = value.period?.last_sync_at
+            ? new Date(value.period.last_sync_at).toLocaleString()
+            : '';
 
-        // Summary
-        this.totalVisits = obj?.summary?.total_visits  || 0;
-        this.totalZones  = obj?.summary?.total_records || 0;
+        // ✅ Common Date
+        const reportDate = value.period?.end_date
+            ? new Date(value.period.end_date).toLocaleDateString()
+            : '';
 
-        // Last Sync
-        this.lastSyncAt = obj?.period?.last_sync_at
-            ? new Date(obj.period.last_sync_at).toLocaleString()
-            : '-';
+        // ✅ Mapping
+        let flat = records.map(rec => ({
 
-        // Map rows
-        this.allData = rows.map((r, index) => ({
-            id             : index + 1,
-            date           : r.date       ? new Date(r.date).toLocaleDateString()       : '-',
-            zone_name      : r.zone_name       || '-',
-            ambassador_name: r.ambassador_name || '-',
-            team_name      : r.team_name       || '-',
-            hours_spent    : r.hours_spent     || '0s',
-            visits         : r.visits          || 0,
-            last_visit     : r.last_visit ? new Date(r.last_visit).toLocaleDateString() : '-'
+            id: rec.ambassador_id,
+
+            date: reportDate,
+
+            zone_name: rec.assigned_zone?.zone_name || 'N/A',
+
+            ambassador_name: rec.ambassador_name || '',
+            team_name: rec.team_name || '',
+
+            hours_spent: rec.total_tracked_hours || '0s',
+            assigned_zone_hours: rec.assigned_zone_tracked_hours || '0s',
+
+            visits: Number(rec.total_visits) || 0,
+
+            last_visit: rec.last_visit
+                ? new Date(rec.last_visit).toLocaleDateString()
+                : ''
         }));
 
-        this.totalRecords = this.allData.length;
-        this.currentPage  = 1;
+        this.allData = flat;
+        this.totalRecords = flat.length;
 
+        this.currentPage = 1;
         this.updatePagination();
-
-        console.log('ArtZoneCoverage → final tableData:', JSON.stringify(this.allData));
     }
 
-    // =========================================================================
-    // PAGINATION
-    // =========================================================================
+    // Pagination
     updatePagination() {
-        const start      = (this.currentPage - 1) * this.pageSize;
-        const end        = start + this.pageSize;
-        this.tableData   = this.allData.slice(start, end);
+        const start = (this.currentPage - 1) * this.pageSize;
+        const end = start + this.pageSize;
+        this.tableData = this.allData.slice(start, end);
     }
 
     handleNext() {
@@ -130,7 +128,7 @@ export default class ArtZoneCoverage extends LightningElement {
     }
 
     // =========================================================================
-    // SORTING
+    // SORTING (FIXED)
     // =========================================================================
     handleSort(event) {
         const { fieldName, sortDirection } = event.detail;
@@ -141,15 +139,34 @@ export default class ArtZoneCoverage extends LightningElement {
         const cloneData = [...this.allData];
 
         cloneData.sort((a, b) => {
-            const val1 = a[fieldName] || '';
-            const val2 = b[fieldName] || '';
+            let val1 = a[fieldName];
+            let val2 = b[fieldName];
+
+            // ✅ Handle date fields properly
+            if (fieldName === 'date') {
+                val1 = a.dateRaw || new Date(0);
+                val2 = b.dateRaw || new Date(0);
+            }
+
+            if (fieldName === 'last_visit') {
+                val1 = a.lastVisitRaw || new Date(0);
+                val2 = b.lastVisitRaw || new Date(0);
+            }
+
+            // ✅ Normalize nulls
+            val1 = val1 ?? '';
+            val2 = val2 ?? '';
 
             return sortDirection === 'asc'
-                ? val1 > val2 ?  1 : -1
-                : val1 < val2 ?  1 : -1;
+                ? val1 > val2 ? 1 : -1
+                : val1 < val2 ? 1 : -1;
         });
 
         this.allData = cloneData;
+
+        // ✅ Reset pagination after sort (important)
+        this.currentPage = 1;
+
         this.updatePagination();
     }
 
@@ -173,19 +190,20 @@ export default class ArtZoneCoverage extends LightningElement {
                 row.hours_spent,
                 row.visits,
                 row.last_visit
-            ].map(val => `"${val ?? ''}"`)
-             .join(',')
+            ].map(val => `"${val ?? ''}"`).join(',')
         );
 
-        const csv      = [headers.join(','), ...rows].join('\n');
+        const csv = [headers.join(','), ...rows].join('\n');
+
         const today    = new Date().toISOString().split('T')[0];
         const fileName = `Zone_Coverage_Report_${today}.csv`;
 
         const encodedUri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
 
         const link = document.createElement('a');
-        link.href     = encodedUri;
+        link.href = encodedUri;
         link.download = fileName;
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

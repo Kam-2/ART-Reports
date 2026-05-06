@@ -8,6 +8,7 @@ export default class ArtCoverageReports extends LightningElement {
 @track overallCoverage = 0;
 @track overallMissed = 0;
 @track totalRecords = 0;
+@track totalCheckpoints =0;
 lastSync;
 
 @track pageSize = 20;
@@ -45,7 +46,8 @@ try {
 
     const checkpoints = obj?.checkpoints || [];
     const summary = obj?.summary || {};
-
+    
+    this.totalCheckpoints=summary.total_checkpoints || 0;
     this.totalRecords = summary.total_records || 0;
     this.overallCoverage = summary.overall_coverage_percentage?.toFixed(2) || 0;
     this.overallMissed = summary.overall_missed_percentage?.toFixed(2) || 0;

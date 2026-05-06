@@ -17,6 +17,7 @@ export default class Art_DashboardMain extends LightningElement {
     @track activeTab        = 'dashboard';
     @track hasUserSetDate   = false;
 
+@track bypassCache = false;
     // ─── Report data ─────────────────────────────────────────────────────────
     @track dashboardData;
     @track teamData;
@@ -41,6 +42,8 @@ export default class Art_DashboardMain extends LightningElement {
     teamIds        = [];
     zoneIds        = [];
     ambassadorIds  = [];
+
+    cache = new Map();
 
     // =========================================================================
     // LIFECYCLE
@@ -91,10 +94,28 @@ export default class Art_DashboardMain extends LightningElement {
         this.loadActiveTabData();
     }
 
-    handleRefresh() {
-        console.log('🔄 Refresh clicked for tab:', this.activeTab);
-        this.loadActiveTabData();
+  handleRefresh() {
+
+    // 🚨 enable bypass mode
+    this.bypassCache = true;
+
+    // clear frontend cache
+    this.cache.clear();
+
+    // reset filters UI
+    const filterCmp = this.template.querySelector('c-dashboard-filters');
+    if (filterCmp) {
+        filterCmp.resetFilters();
     }
+
+    // reload fresh data (NO CACHE)
+    //this.loadActiveTabData();
+
+    // reset flag AFTER execution
+    setTimeout(() => {
+        this.bypassCache = false;
+    }, 0);
+}
 
     // =========================================================================
     // ROUTING
@@ -130,13 +151,25 @@ export default class Art_DashboardMain extends LightningElement {
      * @param {Function} successCallback - receives res.data on success
      * @param {Function} [errorCallback] - receives error message on failure
      */
-    handleApi(promise, successCallback, errorCallback) {
+    handleApi(cacheKey,promise, successCallback, errorCallback) {
+
+         // 🚨 bypass ALL cache when refresh is triggered
+    if (!this.bypassCache && this.cache.has(cacheKey)) {
+        console.log('Serving from frontend cache:', cacheKey);
+        successCallback(this.cache.get(cacheKey));
+        return;
+    }
         this.isloading = true;
 
         promise
             .then(res => {
                 if (res && res.success) {
-                    successCallback(res.data);
+                    // ✅ store in frontend cache
+
+                // ❌ do NOT store cache during refresh
+                if (!this.bypassCache) {
+                    this.cache.set(cacheKey, res.data);
+                }                    successCallback(res.data);
                 } else {
                     const msg = (res && res.message) || 'Unknown error';
                     console.error('API returned success=false:', msg);
@@ -153,11 +186,40 @@ export default class Art_DashboardMain extends LightningElement {
             });
     }
 
+    buildKey(type) {
+    const datePart = `${this.startDate}-${this.endDate}`;
+    const ambPart  = this.ambassadorIds?.join(',') || 'all';
+    const zonePart = this.zoneIds?.join(',') || 'all';
+    const teamPart = this.teamIds?.join(',') || 'all';
+
+        const tab = this.activeTab; // 🔥 IMPORTANT
+
+
+     switch (type) {
+        case 'date':
+            return `${tab}-date-${datePart}`;
+
+        case 'amb':
+            return `${tab}-amb-${datePart}-${ambPart}`;
+
+        case 'zoneAmb':
+            return `${tab}-zoneAmb-${datePart}-${zonePart}-${ambPart}`;
+
+        case 'team':
+            return `${tab}-team-${datePart}-${teamPart}`;
+
+        default:
+            return `${tab}-default-${datePart}`;
+    }
+}
+
     // =========================================================================
     // API CALLS — all use handleApi for consistency
     // =========================================================================
     loadDashboard() {
-        this.handleApi(
+const key = this.buildKey('date');
+        this.handleApi(        key,
+
             getDashboardMetrics({
                 startDate   : this.startDate,
                 endDate     : this.endDate,
@@ -169,7 +231,8 @@ export default class Art_DashboardMain extends LightningElement {
     }
 
     loadTeamDashboard() {
-        this.handleApi(
+        const key = this.buildKey('team');
+        this.handleApi(key,
             getTeamDashboard({
                 teamIds   : this.teamIds,
                 startDate : this.startDate,
@@ -182,8 +245,9 @@ export default class Art_DashboardMain extends LightningElement {
     }
 
     loadZoneCoverage() {
+const key = this.buildKey('zoneAmb');
         this.zoneError = null;
-        this.handleApi(
+        this.handleApi(key,
             getZoneCoverage({
                 startDate    : this.startDate,
                 endDate      : this.endDate,
@@ -199,8 +263,10 @@ export default class Art_DashboardMain extends LightningElement {
     }
 
     loadMissedCheckpoints() {
+
+const key = this.buildKey('zoneAmb');
         this.error = null;
-        this.handleApi(
+        this.handleApi(key,
             getMissedCheckpoints({
                 startDate    : this.startDate,
                 endDate      : this.endDate,
@@ -213,8 +279,9 @@ export default class Art_DashboardMain extends LightningElement {
     }
 
     loadCoverageReports() {
+const key = this.buildKey('zoneAmb');
         this.coverageError = null;
-        this.handleApi(
+        this.handleApi(key,
             getCoverageReports({
                 startDate    : this.startDate,
                 endDate      : this.endDate,
@@ -227,8 +294,9 @@ export default class Art_DashboardMain extends LightningElement {
     }
 
     loadCheckpointTiming() {
+        const key = this.buildKey('zoneAmb');
         this.error = null;
-        this.handleApi(
+        this.handleApi(key,
             getCheckpointTiming({
                 startDate    : this.startDate,
                 endDate      : this.endDate,
@@ -264,8 +332,9 @@ export default class Art_DashboardMain extends LightningElement {
 }
 
     loadAmbassadorActivityReport() {
+        const key = this.buildKey('amb');
         this.error = null;
-        this.handleApi(
+        this.handleApi(key,
             getAmbassadorActivityReport({
                 startDate    : this.startDate,
                 endDate      : this.endDate,
@@ -277,8 +346,10 @@ export default class Art_DashboardMain extends LightningElement {
     }
 
     loadAmbassadorInOutReport() {
+                const key = this.buildKey('amb');
+
         this.error = null;
-        this.handleApi(
+        this.handleApi(key,
             getAmbassadorInOutReport({
                 startDate    : this.startDate,
                 endDate      : this.endDate,
@@ -290,8 +361,10 @@ export default class Art_DashboardMain extends LightningElement {
     }
 
     loadIdleReports() {
+                const key = this.buildKey('amb');
+
         this.idleError = null;
-        this.handleApi(
+        this.handleApi(key,
             getAmbassadorIdleReport({
                 startDate    : this.startDate,
                 endDate      : this.endDate,

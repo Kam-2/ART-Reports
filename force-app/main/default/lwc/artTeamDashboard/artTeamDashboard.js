@@ -103,7 +103,7 @@ export default class ArtTeamDashboard extends LightningElement {
                 team.missed += a.total_checkpoints_missed || 0;
 
                 // ✅ FIX: accumulate instead of overwrite
-                team.hours += a.total_working_hours || 0;
+                team.hours = a.total_working_hours;
 
                 team.avgSpeed += a.average_speed_kmh || 0;
 

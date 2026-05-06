@@ -4,6 +4,9 @@ import getAmbassadors from '@salesforce/apex/DashboardFilterController.getAmbass
 import getZonePicklistFromAPI from '@salesforce/apex/GcpReportsService.getZonePicklist';
 
 export default class DashboardFilters extends LightningElement {
+
+    _needsValidationReset = false;
+
     _activeTab;
 
     isInitialized = false;
@@ -79,6 +82,54 @@ export default class DashboardFilters extends LightningElement {
         return `${yyyy}-${mm}-${dd}`;
     }
    
+   @api
+resetFilters() {
+    console.log('🔄 resetFilters called');
+
+    // ✅ reset values
+    this.applyTabDefaultDates(this.activeTab);
+
+    this.teamIds = [];
+    this.zoneIds = [];
+    this.ambassadorIds = [];
+
+    this.isInitialized = false;
+    this.isZoneUserChanged = false;
+    this.isAmbUserChanged = false;
+
+    // 🔥 mark for validation reset AFTER render
+    this._needsValidationReset = true;
+
+    // ✅ notify parent (this will reload data)
+    this.dispatchEvent(new CustomEvent('filterchange', {
+        detail: {
+            startDate: this.startDate,
+            endDate: this.endDate,
+            teamIds: [],
+            zoneIds: [],
+            ambassadorIds: []
+        }
+    }));
+}
+
+renderedCallback() {
+    if (this._needsValidationReset) {
+        this._needsValidationReset = false;
+
+        const startInput = this.template.querySelector('.startDate');
+        const endInput = this.template.querySelector('.endDate');
+
+        if (startInput) {
+            startInput.setCustomValidity('');
+            startInput.reportValidity();
+        }
+
+        if (endInput) {
+            endInput.setCustomValidity('');
+            endInput.reportValidity();
+        }
+    }
+}
     applyTabDefaultDates(tab) {
 
         const today = new Date();
